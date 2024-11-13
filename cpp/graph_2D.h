@@ -19,7 +19,6 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #ifndef GRAPH_2D_H
 #define GRAPH_2D_H
 
@@ -33,88 +32,91 @@ static string figs_ind_file_name("figs_ind.dat");
 
 extern "C++"
 {
-    typedef array<double, 2> point;
-    
-    enum plot_prog {GNUPLOT, PYPLOT};
-    
-    class graph_2D
-    {
-    public:
-        graph_2D(plot_prog =PYPLOT, int =0);
-        ~graph_2D();
-        
-        void add_data(double*, double*, int);
-        void print_data();
-        void curve_plot(char* =NULL, int=0);
-        void curve_plot(double*, double*, int, char* =NULL, int=0);
-        void set_axes_lims(double*, double*);
-        void set_axes_labels(const char*, const char*);
-        void add_to_legend(const char*);
+	typedef array<double, 2> point;
+	
+	enum plot_prog {GNUPLOT, PYPLOT};
+	
+	class graph_2D
+	{
+	public:
+		graph_2D(plot_prog =PYPLOT, int =0);
+		~graph_2D();
+		
+		void add_data(double*, double*, int);
+		void print_data();
+		void curve_plot(const char* =NULL, int=0);
+		void curve_plot(double*, double*, int, const char* =NULL, int=0);
+		void set_axes_lims(double*, double*);
+		void set_axes_labels(const char*, const char*);
+		void add_to_legend(const char*);
 		void add_attribute(const char *attr);
 		void add_title(const char *ttl);
-        
-        double labels_fontsize;
-        double legend_fontsize;
+	//	void save_figure(const char *ttl);
+	//	void add_fig_file_attribute(const char *attr);
+		
+		double labels_fontsize;
+		double legend_fontsize;
 		double title_fontsize;
-        int legend_loc;
+		int legend_loc;
 		
 		static void open_pipe();
 		static void close_pipe();
-        static void show_figures();
-        static void close_figures();
+		static void show_figures();
+		static void close_figures();
 		static void show_commands(bool show_comm){show_command=show_comm;}
 		static void reset_figs_ind_file(){if (figs_ind_file) figs_ind_file.close(); figs_ind_file.open(figs_ind_file_name); ind_file=0;}
 		
-        static FILE *plot_pipe;
+		static FILE *plot_pipe;
 		static FILE *file_pipe;
 		static bool display_figures;
 		static bool print_to_file;
-        static int ind_file;
-        static int fig_ind_max;
-        static char program_name[100];
-        static char config_command[200];
-        static char fig_command_format[100];
-        static char plot_function[100];
-        static char load_data_command_format[100];
-        static char plot_data_command_format[100];
-        static char plot_data_command_separator[100];
+		static int ind_file;
+		static int fig_ind_max;
+		static char program_name[100];
+		static char config_command[200];
+		static char fig_command_format[100];
+		static char plot_function[100];
+		static char load_data_command_format[100];
+		static char plot_data_command_format[100];
+		static char plot_data_command_separator[100];
 		static char title_command_format[100];
-        static char xlabel_command_format[100];
-        static char ylabel_command_format[100];
-        static char xlims_command_format[100];
-        static char ylims_command_format[100];
-        static char legend_function[100];
-        static char plot_closing_command[100];
-        static char show_figures_command[100];
-        static char close_figures_command[100];
-        static char close_figures_command_format[100];
-        static char tmp_file_name_format[100];
+		static char xlabel_command_format[100];
+		static char ylabel_command_format[100];
+		static char xlims_command_format[100];
+		static char ylims_command_format[100];
+		static char legend_function[100];
+		static char plot_closing_command[100];
+		static char show_figures_command[100];
+		static char close_figures_command[100];
+		static char close_figures_command_format[100];
+		static char tmp_file_name_format[100];
 		static bool show_command;
 		static plot_prog plotting_program;
 		static char file_name[100];
 		static char file_name_format[100];
 		static char figs_dir[100];
 		static ofstream figs_ind_file;
-        
-    private:
-        void plot_with_pyplot(char* =NULL, int=0);
-        void plot_with_gnuplot(char* =NULL, int=0);
-        
+		
+	private:
+		void plot_with_pyplot(const char* =NULL, int=0);
+		void plot_with_gnuplot(const char* =NULL, int=0);
+		
 //        char fig_name[100];
-        char title[400];
-        char xlabel[100];
-        char ylabel[100];
+		char title[400];
+		char xlabel[100];
+		char ylabel[100];
 
-        double xlims[2];
-        double ylims[2];
-        
-        list< vector<point> > list_curves;
-        list< string > curves_names;
+		double xlims[2];
+		double ylims[2];
+		
+		list< vector<point> > list_curves;
+		list< string > curves_names;
 		list< string > curves_attributes;
 		
 		int fig_ind;
-    };
-    
+	};
+	
 }
 
 #endif
+

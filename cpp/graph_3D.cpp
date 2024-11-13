@@ -79,7 +79,7 @@ graph_3D::graph_3D(int fig_ind_p)
 	
 	strcpy(figs_dir,"OmegaMaxEnt_figs_data");
 	strcpy(file_name_format,"OmegaMaxEnt_surf_figs_%d.py");
-	strcpy(program_name,"python");
+	strcpy(program_name,"python3");
 	strcpy(config_command,"from mpl_toolkits.mplot3d import Axes3D\nfrom matplotlib import pyplot\nfrom matplotlib import cm\nfrom numpy import loadtxt\nfrom matplotlib.ticker import LinearLocator, FormatStrFormatter\nimport numpy as np\n");
 	strcpy(load_x_command_format,"x=loadtxt(\"%s\")\n");
 	strcpy(load_y_command_format,"y=loadtxt(\"%s\")\n");
