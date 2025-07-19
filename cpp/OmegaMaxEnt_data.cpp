@@ -4987,10 +4987,10 @@ bool OmegaMaxEnt_data::spline_val_chi_part(vec x, vec x0, uvec ind_xlims, vec xs
 	{
 		xp=x(j);
 		if (xp<0) xp=-xp;
-		if (xp>=0 && xp<xr)
+		if (xp>=0 && xp<=xr)
 		{
 			l=0;
-			while (xp>=x0(l+1) && l<ind_xlims(0)-1) l++;
+			while (l<ind_xlims(0)-1 && xp>=x0(l+1)) l++;
 			a=coeffs(4*l);
 			b=coeffs(4*l+1);
 			c=coeffs(4*l+2);
@@ -5001,7 +5001,7 @@ bool OmegaMaxEnt_data::spline_val_chi_part(vec x, vec x0, uvec ind_xlims, vec xs
 		else if (xp>xr)
 		{
 			l=ind_xlims(0);
-			while (xp>x0(l+1) && l<Nx0-1) l++;
+			while (l<Nx0-1 && xp>x0(l+1)) l++;
 			a=coeffs(4*l);
 			b=coeffs(4*l+1);
 			c=coeffs(4*l+2);
@@ -5383,6 +5383,7 @@ bool OmegaMaxEnt_data::set_default_model_chi()
 		vec w_def=def_data.col(0);
 		vec def_m=def_data.col(1);
 		uint Nw_def=w_def.n_rows;
+		
 		if (w_def(0)!=0)
 		{
 			cout<<"set_default_model_chi(): if \"Im(G) column in data file\" is smaller than 1, the first frequency of the default model must be 0\n";
@@ -5395,12 +5396,14 @@ bool OmegaMaxEnt_data::set_default_model_chi()
 		}
 		double wmx=w(Nw-1);
 		
-		double wmx_def=w_def(Nw-1);
+		double wmx_def=w_def(Nw_def-1);
+		
 		int j1, j2, j3;
 		j1=Nw_def-3;
 		j2=Nw_def-2;
 		j3=Nw_def-1;
 		double w0r_def=(2*w_def(j1)*w_def(j3)-w_def(j1)*w_def(j2)-w_def(j2)*w_def(j3))/(w_def(j1)-2*w_def(j2)+w_def(j3));
+		
 		if (w0r_def>wmx_def)
 		{
 			if (w_def(Nw_def-1)>wr)
@@ -5439,7 +5442,7 @@ bool OmegaMaxEnt_data::set_default_model_chi()
 					coeffs_spline_def(1)=dfd;
 					coeffs_spline_def(Nc)=def_m(Nw_def-1);
 					
-					if (dfd<=0 && C1d>0 && C2d>0)
+					if (dfd<0 && C1d>0 && C2d>0)
 					{
 						spline_coeffs(w_def.memptr(),def_m.memptr(),Nw_def,coeffs_spline_def.memptr());
 						if (!default_model_val_chi(w, w_def, coeffs_spline_def, gaussians_params, default_model))
@@ -5447,13 +5450,19 @@ bool OmegaMaxEnt_data::set_default_model_chi()
 							return false;
 						}
 					}
+					else if (dfd>=0)
+					{
+						cout<<"set_default_model_chi(): The derivative does not have the correct sign at the right boundary\n";
+						return false;
+					}
 					else
 					{
-						cout<<"set_default_model_chi(): problem with the user defined default model.\n";
-						if (dfd>=0)
-							cout<<"The derivative does not have the correct sign at the right boundary\n";
-						if ( (C1d<0 || C2d<0) && w_def(Nw_def)<w(Nw) )
-							cout<<"Incorrect parameters found. Unable to extend the model to whole frequency range.\n";
+//						cout<<"set_default_model_chi(): problem with the user defined default model.\n";
+//						if (dfd>=0)
+//							cout<<"The derivative does not have the correct sign at the right boundary\n";
+//						if ( (C1d<0 || C2d<0) && w_def(Nw_def)<w(Nw) )
+						
+						cout<<"Incorrect parameters found. Unable to extend the model to whole frequency range.\n";
 						
 						return false;
 					}

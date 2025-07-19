@@ -1,5 +1,8 @@
 cmake_minimum_required (VERSION 2.6)
 
+include_directories(/usr/local/include)
+link_directories(/usr/local/lib)
+
 project(OmegaMaxEnt)
 
 add_executable(OmegaMaxEnt graph_2D.cpp graph_3D.cpp generique.cpp OmegaMaxEnt_data.cpp OmegaMaxEnt_main.cpp)
