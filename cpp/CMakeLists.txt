@@ -1,5 +1,6 @@
 cmake_minimum_required (VERSION 2.6)
 
+#those two lines may be required, depending on your system, using the apropriate paths for your system.
 include_directories(/usr/local/include)
 link_directories(/usr/local/lib)
 
